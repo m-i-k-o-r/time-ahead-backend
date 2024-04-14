@@ -1,0 +1,17 @@
+version: '1'
+
+services:
+  postgres:
+    image: 'postgres:latest'
+    container_name: 'time-ahead-container'
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: mypass
+      POSTGRES_DB: time
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+
+volumes:
+  postgres-data:
