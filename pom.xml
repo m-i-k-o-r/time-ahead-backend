@@ -18,6 +18,7 @@
 
 		<mapstruct.version>1.5.5.Final</mapstruct.version>
 		<maven-compile.version>3.11.0</maven-compile.version>
+		<springdoc-openapi-starter-webmvc-ui.version>2.0.4</springdoc-openapi-starter-webmvc-ui.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -55,6 +56,13 @@
 			<artifactId>mapstruct</artifactId>
 			<version>${mapstruct.version}</version>
 			<optional>true</optional>
+		</dependency>
+
+		<!-- swagger-->
+		<dependency>
+			<groupId>org.springdoc</groupId>
+			<artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+			<version>${springdoc-openapi-starter-webmvc-ui.version}</version>
 		</dependency>
 	</dependencies>
 
