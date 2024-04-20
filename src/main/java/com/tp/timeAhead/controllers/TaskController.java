@@ -32,8 +32,9 @@ public class TaskController {
     }
 
     @GetMapping()
-    public List<TaskDto> getAllTasks() {
-        return taskService.getAllTask();
+    public List<TaskDto> getAllTasks(@RequestParam(defaultValue = "ASC") String reminderSortDirection,
+                                     @RequestParam(defaultValue = "false") Boolean isDone) {
+        return taskService.getAllTask(reminderSortDirection, isDone);
     }
 
     @DeleteMapping("/{id}")
