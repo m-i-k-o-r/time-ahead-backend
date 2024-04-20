@@ -5,8 +5,10 @@ import com.tp.timeAhead.data.forms.activity.ActivityCreateForm;
 import com.tp.timeAhead.data.forms.activity.ActivityForm;
 import com.tp.timeAhead.service.ActivityService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
@@ -32,8 +34,9 @@ public class ActivityController {
     }
 
     @GetMapping()
-    public List<ActivityDto> getAllActivities() {
-        return activityService.getAllActivity();
+    public List<ActivityDto> getAllActivities(@RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate data,
+                                              @RequestParam(required = false) UUID categoryId) {
+        return activityService.getAllActivity(data, categoryId);
     }
 
     @DeleteMapping("/{id}")

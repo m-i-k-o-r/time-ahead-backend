@@ -12,6 +12,7 @@ import com.tp.timeAhead.repos.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
@@ -47,8 +48,12 @@ public class ActivityService {
         return ActivityMapper.INSTANCE.toDto(activityRepository.findById(id).orElseThrow(() -> new NotFoundException("Activity with this id not found")));
     }
 
-    public List<ActivityDto> getAllActivity() {
-        return ActivityMapper.INSTANCE.toDto(activityRepository.findAll());
+    public List<ActivityDto> getAllActivity(LocalDate data, UUID categoryId) {
+        if (categoryId == null) {
+            return ActivityMapper.INSTANCE.toDto(activityRepository.findAllByTime(data));
+        } else {
+            return ActivityMapper.INSTANCE.toDto(activityRepository.findAllByTimeAndCategoryId(data, categoryId));
+        }
     }
 
     public void deleteActivity(UUID id) {
