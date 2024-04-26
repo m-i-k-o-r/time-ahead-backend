@@ -32,8 +32,8 @@ public class CategoryController {
     }
 
     @GetMapping()
-    public List<CategoryDto> getAllCategories() {
-        return categoryService.getAllCategory();
+    public List<CategoryDto> getAllCategories(@RequestParam UUID userId) {
+        return categoryService.getAllCategory(userId);
     }
 
     @DeleteMapping("/{id}")

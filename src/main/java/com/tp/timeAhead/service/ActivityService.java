@@ -48,11 +48,11 @@ public class ActivityService {
         return ActivityMapper.INSTANCE.toDto(activityRepository.findById(id).orElseThrow(() -> new NotFoundException("Activity with this id not found")));
     }
 
-    public List<ActivityDto> getAllActivity(LocalDate data, UUID categoryId) {
+    public List<ActivityDto> getAllActivity(UUID userId, LocalDate data, UUID categoryId) {
         if (categoryId == null) {
-            return ActivityMapper.INSTANCE.toDto(activityRepository.findAllByTime(data));
+            return ActivityMapper.INSTANCE.toDto(activityRepository.findAllByTime(userId, data));
         } else {
-            return ActivityMapper.INSTANCE.toDto(activityRepository.findAllByTimeAndCategoryId(data, categoryId));
+            return ActivityMapper.INSTANCE.toDto(activityRepository.findAllByTimeAndCategoryId(userId, data, categoryId));
         }
     }
 

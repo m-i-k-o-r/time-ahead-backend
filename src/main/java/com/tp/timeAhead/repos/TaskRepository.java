@@ -12,9 +12,9 @@ import java.util.UUID;
 @Repository
 public interface TaskRepository extends JpaRepository<Task, UUID> {
 
-    @Query("SELECT t FROM Task t WHERE t.isDone = :isDone ORDER BY t.reminder ASC")
-    List<Task> findAllByOrderByReminderAsc(@Param("isDone") boolean isDone);
+    @Query("SELECT t FROM Task t WHERE t.user.id = :userId AND t.isDone = :isDone ORDER BY t.reminder ASC")
+    List<Task> findAllByOrderByReminderAsc(@Param("userId") UUID userId, @Param("isDone") boolean isDone);
 
-    @Query("SELECT t FROM Task t WHERE t.isDone = :isDone ORDER BY t.reminder DESC")
-    List<Task> findAllByOrderByReminderDesc(@Param("isDone") boolean isDone);
+    @Query("SELECT t FROM Task t WHERE t.user.id = :userId AND t.isDone = :isDone ORDER BY t.reminder DESC")
+    List<Task> findAllByOrderByReminderDesc(@Param("userId") UUID userId, @Param("isDone") boolean isDone);
 }

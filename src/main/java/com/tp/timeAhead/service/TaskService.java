@@ -43,11 +43,11 @@ public class TaskService {
         return TaskMapper.INSTANCE.toDto(taskRepository.findById(id).orElseThrow(() -> new NotFoundException("Task with this id not found")));
     }
 
-    public List<TaskDto> getAllTask(String reminderSortDirection, Boolean isDone) {
+    public List<TaskDto> getAllTask(UUID userId, String reminderSortDirection, Boolean isDone) {
         if (reminderSortDirection.equalsIgnoreCase("asc")) {
-            return TaskMapper.INSTANCE.toDto(taskRepository.findAllByOrderByReminderAsc(isDone));
+            return TaskMapper.INSTANCE.toDto(taskRepository.findAllByOrderByReminderAsc(userId, isDone));
         } else if (reminderSortDirection.equalsIgnoreCase("desc")) {
-            return TaskMapper.INSTANCE.toDto(taskRepository.findAllByOrderByReminderDesc(isDone));
+            return TaskMapper.INSTANCE.toDto(taskRepository.findAllByOrderByReminderDesc(userId, isDone));
         }
 
         throw new NotFoundException("Incorrect SortDirection: " + reminderSortDirection + ". Not found");

@@ -32,8 +32,9 @@ public class HabitController {
     }
 
     @GetMapping()
-    public List<HabitDto> getAllHabits(@RequestParam(required = false) String day) {
-        return habitService.getAllHabit(day);
+    public List<HabitDto> getAllHabits(@RequestParam UUID userId,
+                                       @RequestParam(required = false) String day) {
+        return habitService.getAllHabit(userId, day);
     }
 
     @DeleteMapping("/{id}")
