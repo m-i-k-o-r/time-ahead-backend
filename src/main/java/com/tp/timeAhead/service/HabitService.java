@@ -47,11 +47,11 @@ public class HabitService {
         return HabitMapper.INSTANCE.toDto(habitRepository.findById(id).orElseThrow(() -> new NotFoundException("Habit with this id not found")));
     }
 
-    public List<HabitDto> getAllHabit(String day) {
+    public List<HabitDto> getAllHabit(UUID userId, String day) {
         if(day == null) {
-            return HabitMapper.INSTANCE.toDto(habitRepository.findAll());
+            return HabitMapper.INSTANCE.toDto(habitRepository.findAll(userId));
         } else {
-            return HabitMapper.INSTANCE.toDto(habitRepository.findAllByDay(day));
+            return HabitMapper.INSTANCE.toDto(habitRepository.findAllByDay(userId, day));
         }
     }
 

@@ -13,6 +13,9 @@ import java.util.UUID;
 
 @Repository
 public interface HabitRepository extends JpaRepository<Habit, UUID> {
-    @Query("SELECT h FROM Habit h WHERE LOWER(h.repeatReminder) LIKE CONCAT('%', LOWER(:day), '%')")
-    List<Habit> findAllByDay(@Param("day") String day);
+    @Query("SELECT h FROM Habit h WHERE h.user.id = :userId AND LOWER(h.repeatReminder) LIKE CONCAT('%', LOWER(:day), '%')")
+    List<Habit> findAllByDay(@Param("userId") UUID userId, @Param("day") String day);
+
+    @Query("SELECT h FROM Habit h WHERE h.user.id = :userId")
+    List<Habit> findAll(@Param("userId") UUID userId);
 }
