@@ -37,8 +37,8 @@ public class CategoryService {
         return CategoryMapper.INSTANCE.toDto(categoryRepository.findById(id).orElseThrow(() -> new NotFoundException("Category with this id not found")));
     }
 
-    public List<CategoryDto> getAllCategory() {
-        return CategoryMapper.INSTANCE.toDto(categoryRepository.findAll());
+    public List<CategoryDto> getAllCategory(UUID userId) {
+        return CategoryMapper.INSTANCE.toDto(categoryRepository.findAll(userId));
     }
 
     public void deleteCategory(UUID id) {
