@@ -34,9 +34,10 @@ public class ActivityController {
     }
 
     @GetMapping()
-    public List<ActivityDto> getAllActivities(@RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate data,
+    public List<ActivityDto> getAllActivities(@RequestParam UUID userId,
+                                              @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate data,
                                               @RequestParam(required = false) UUID categoryId) {
-        return activityService.getAllActivity(data, categoryId);
+        return activityService.getAllActivity(userId, data, categoryId);
     }
 
     @DeleteMapping("/{id}")

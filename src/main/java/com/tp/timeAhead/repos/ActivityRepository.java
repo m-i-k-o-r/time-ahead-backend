@@ -13,9 +13,9 @@ import java.util.UUID;
 @Repository
 public interface ActivityRepository extends JpaRepository<Activity, UUID> {
 
-    @Query("SELECT a FROM Activity a WHERE DATE(a.startTime) <= :data AND (a.endTime IS NULL OR DATE(a.endTime) >= :data) ORDER BY a.endTime ASC NULLS FIRST, a.startTime ASC")
-    List<Activity> findAllByTime(@Param("data") LocalDate data);
+    @Query("SELECT a FROM Activity a WHERE a.user.id = :userId AND (DATE(a.startTime) <= :data AND (a.endTime IS NULL OR DATE(a.endTime) >= :data)) ORDER BY a.endTime ASC NULLS FIRST, a.startTime ASC")
+    List<Activity> findAllByTime(@Param("userId") UUID userId, @Param("data") LocalDate data);
 
-    @Query("SELECT a FROM Activity a WHERE a.category.id = :categoryId AND (DATE(a.startTime) <= :data AND (a.endTime IS NULL OR DATE(a.endTime) >= :data)) ORDER BY a.endTime ASC NULLS FIRST, a.startTime ASC")
-    List<Activity> findAllByTimeAndCategoryId(@Param("data") LocalDate data, @Param("categoryId") UUID categoryId);
+    @Query("SELECT a FROM Activity a WHERE a.user.id = :userId AND (a.category.id = :categoryId AND (DATE(a.startTime) <= :data AND (a.endTime IS NULL OR DATE(a.endTime) >= :data))) ORDER BY a.endTime ASC NULLS FIRST, a.startTime ASC")
+    List<Activity> findAllByTimeAndCategoryId(@Param("userId") UUID userId, @Param("data") LocalDate data, @Param("categoryId") UUID categoryId);
 }
