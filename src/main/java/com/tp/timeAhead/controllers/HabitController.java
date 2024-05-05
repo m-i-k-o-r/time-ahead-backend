@@ -26,6 +26,21 @@ public class HabitController {
         return habitService.updateHabit(id, form);
     }
 
+    @PutMapping("/{id}/complete")
+    public HabitDto changeCompleteHabit(@PathVariable UUID id) {
+        return habitService.changeCompleteHabit(id);
+    }
+
+    @PutMapping("/{id}/enable")
+    public HabitDto enableHabit(@PathVariable UUID id) {
+        return habitService.enableHabit(id);
+    }
+
+    @PutMapping("/{id}/end")
+    public HabitDto changeEndingHabit(@PathVariable UUID id) {
+        return habitService.changeEndingHabit(id);
+    }
+
     @GetMapping("/{id}")
     public HabitDto getHabit(@PathVariable UUID id) {
         return habitService.getHabit(id);

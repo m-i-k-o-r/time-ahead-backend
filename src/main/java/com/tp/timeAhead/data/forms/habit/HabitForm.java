@@ -13,6 +13,4 @@ public class HabitForm {
     private String description;
     private LocalTime reminderTime;
     private List<String> reminderDays;
-    private int numReminder;
-    private boolean isDone;
 }

@@ -21,7 +21,10 @@ public class HabitService {
     private final UserRepository userRepository;
 
     public HabitDto createHabit(HabitCreateForm form) {
-        String cron = String.format("0 %s %s * * %s", form.getReminderTime().getMinute(), form.getReminderTime().getHour(), String.join(",", form.getReminderDays()).toLowerCase());
+        String cron = String.format("0 %s %s * * %s",
+                form.getReminderTime().getMinute(),
+                form.getReminderTime().getHour(),
+                String.join(",", form.getReminderDays()).toLowerCase());
         return HabitMapper.INSTANCE.toDto(habitRepository.save(Habit.builder()
                 .name(form.getName())
                 .description(form.getDescription())
@@ -36,10 +39,35 @@ public class HabitService {
         Habit habit = habitRepository.findById(id).orElseThrow(() -> new NotFoundException("Habit with this id not found"));
         habit.setName(form.getName());
         habit.setDescription(form.getDescription());
-        String cron = String.format("0 %s %s * * %s", form.getReminderTime().getMinute(), form.getReminderTime().getHour(), String.join(",", form.getReminderDays()).toLowerCase());
+        String cron = String.format("0 %s %s * * %s",
+                form.getReminderTime().getMinute(),
+                form.getReminderTime().getHour(),
+                String.join(",", form.getReminderDays()).toLowerCase());
         habit.setRepeatReminder(cron);
-        habit.setNumReminder(form.getNumReminder());
-        habit.setDone(form.isDone());
+        return HabitMapper.INSTANCE.toDto(habitRepository.save(habit));
+    }
+
+    public HabitDto changeCompleteHabit(UUID id) {
+        Habit habit = habitRepository.findById(id).orElseThrow(() -> new NotFoundException("Habit with this id not found"));
+        if (habit.isDone()) {
+            habit.setNumReminder(habit.getNumReminder() - 1);
+            habit.setDone(false);
+        } else {
+            habit.setNumReminder(habit.getNumReminder() + 1);
+            habit.setDone(true);
+        }
+        return HabitMapper.INSTANCE.toDto(habitRepository.save(habit));
+    }
+
+    public HabitDto enableHabit(UUID id) {
+        Habit habit = habitRepository.findById(id).orElseThrow(() -> new NotFoundException("Habit with this id not found"));
+        habit.setDone(false);
+        return HabitMapper.INSTANCE.toDto(habitRepository.save(habit));
+    }
+
+    public HabitDto changeEndingHabit(UUID id) {
+        Habit habit = habitRepository.findById(id).orElseThrow(() -> new NotFoundException("Habit with this id not found"));
+        habit.setNumReminder(habit.getNumReminder() * -1);
         return HabitMapper.INSTANCE.toDto(habitRepository.save(habit));
     }
 
@@ -48,7 +76,7 @@ public class HabitService {
     }
 
     public List<HabitDto> getAllHabit(UUID userId, String day) {
-        if(day == null) {
+        if (day == null) {
             return HabitMapper.INSTANCE.toDto(habitRepository.findAll(userId));
         } else {
             return HabitMapper.INSTANCE.toDto(habitRepository.findAllByDay(userId, day));
