@@ -11,5 +11,4 @@ public class TaskForm {
     private String name;
     private String description;
     private LocalDateTime reminder;
-    private boolean isDone;
 }

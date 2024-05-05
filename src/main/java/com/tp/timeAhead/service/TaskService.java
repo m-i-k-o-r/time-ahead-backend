@@ -35,7 +35,12 @@ public class TaskService {
         task.setName(form.getName());
         task.setDescription(form.getDescription());
         task.setReminder(form.getReminder());
-        task.setDone(form.isDone());
+        return TaskMapper.INSTANCE.toDto(taskRepository.save(task));
+    }
+
+    public TaskDto changeCompleteTask(UUID id) {
+        Task task = taskRepository.findById(id).orElseThrow(() -> new NotFoundException("Task with this id not found"));
+        task.setDone(!task.isDone());
         return TaskMapper.INSTANCE.toDto(taskRepository.save(task));
     }
 
