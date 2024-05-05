@@ -26,6 +26,11 @@ public class TaskController {
         return taskService.updateTask(id, form);
     }
 
+    @PutMapping("/{id}/complete")
+    public TaskDto changeCompleteTask(@PathVariable UUID id) {
+        return taskService.changeCompleteTask(id);
+    }
+
     @GetMapping("/{id}")
     public TaskDto getTask(@PathVariable UUID id) {
         return taskService.getTask(id);
