@@ -1,13 +1,10 @@
 package com.tp.timeAhead.data.dto;
 
-import lombok.*;
+import java.util.UUID;
 
-@Getter
-@Setter
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
-public class CategoryDto {
-    private String name;
+public record CategoryDto(
+        UUID id,
+        String name
+) {
+
 }
-
