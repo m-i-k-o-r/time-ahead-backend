@@ -1,11 +1,7 @@
 package com.tp.timeAhead.data.forms.category;
 
-import lombok.Getter;
-import lombok.Setter;
+public record CategoryForm(
+        String name
+) {
 
-@Getter
-@Setter
-public class CategoryForm {
-    private String name;
 }
-

@@ -1,11 +1,8 @@
 package com.tp.timeAhead.data.forms.user;
 
-import lombok.Getter;
-import lombok.Setter;
+public record UserForm(
+        String email,
+        String password
+) {
 
-@Getter
-@Setter
-public class UserForm {
-    private String email;
-    private String password;
 }

@@ -19,15 +19,15 @@ public class UserService {
 
     public UserDto createUser(UserForm form) {
         return UserMapper.INSTANCE.toDto(userRepository.save(User.builder()
-                .email(form.getEmail())
-                .password(form.getPassword())
+                .email(form.email())
+                .password(form.password())
                 .build()));
     }
 
     public UserDto updateUser(UUID id, UserForm form) {
         User user = userRepository.findById(id).orElseThrow(() -> new NotFoundException("User with this id not found"));
-        user.setEmail(form.getEmail());
-        user.setPassword(form.getPassword());
+        user.setEmail(form.email());
+        user.setPassword(form.password());
         return UserMapper.INSTANCE.toDto(userRepository.save(user));
     }
 

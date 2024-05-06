@@ -22,27 +22,27 @@ public class HabitService {
 
     public HabitDto createHabit(HabitCreateForm form) {
         String cron = String.format("0 %s %s * * %s",
-                form.getReminderTime().getMinute(),
-                form.getReminderTime().getHour(),
-                String.join(",", form.getReminderDays()).toLowerCase());
+                form.reminderTime().getMinute(),
+                form.reminderTime().getHour(),
+                String.join(",", form.reminderDays()).toLowerCase());
         return HabitMapper.INSTANCE.toDto(habitRepository.save(Habit.builder()
-                .name(form.getName())
-                .description(form.getDescription())
+                .name(form.name())
+                .description(form.description())
                 .repeatReminder(cron)
                 .numReminder(0)
                 .isDone(false)
-                .user(userRepository.findById(form.getUserId()).orElseThrow(() -> new NotFoundException("User with this id not found")))
+                .user(userRepository.findById(form.userId()).orElseThrow(() -> new NotFoundException("User with this id not found")))
                 .build()));
     }
 
     public HabitDto updateHabit(UUID id, HabitForm form) {
         Habit habit = habitRepository.findById(id).orElseThrow(() -> new NotFoundException("Habit with this id not found"));
-        habit.setName(form.getName());
-        habit.setDescription(form.getDescription());
+        habit.setName(form.name());
+        habit.setDescription(form.description());
         String cron = String.format("0 %s %s * * %s",
-                form.getReminderTime().getMinute(),
-                form.getReminderTime().getHour(),
-                String.join(",", form.getReminderDays()).toLowerCase());
+                form.reminderTime().getMinute(),
+                form.reminderTime().getHour(),
+                String.join(",", form.reminderDays()).toLowerCase());
         habit.setRepeatReminder(cron);
         return HabitMapper.INSTANCE.toDto(habitRepository.save(habit));
     }

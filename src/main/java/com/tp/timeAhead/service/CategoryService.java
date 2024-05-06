@@ -22,14 +22,14 @@ public class CategoryService {
 
     public CategoryDto createCategory(CategoryCreateForm form) {
         return CategoryMapper.INSTANCE.toDto(categoryRepository.save(Category.builder()
-                .name(form.getName())
-                .user(userRepository.findById(form.getUserId()).orElseThrow(() -> new NotFoundException("User with this id not found")))
+                .name(form.name())
+                .user(userRepository.findById(form.userId()).orElseThrow(() -> new NotFoundException("User with this id not found")))
                 .build()));
     }
 
     public CategoryDto updateCategory(UUID id, CategoryForm form) {
         Category category = categoryRepository.findById(id).orElseThrow(() -> new NotFoundException("Category with this id not found"));
-        category.setName(form.getName());
+        category.setName(form.name());
         return CategoryMapper.INSTANCE.toDto(categoryRepository.save(category));
     }
 
