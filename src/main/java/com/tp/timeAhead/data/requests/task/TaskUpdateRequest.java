@@ -1,8 +1,8 @@
-package com.tp.timeAhead.data.forms.task;
+package com.tp.timeAhead.data.requests.task;
 
 import java.time.LocalDateTime;
 
-public record TaskForm(
+public record TaskUpdateRequest(
         String name,
         String description,
         LocalDateTime reminder

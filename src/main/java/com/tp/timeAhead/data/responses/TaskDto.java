@@ -1,4 +1,4 @@
-package com.tp.timeAhead.data.dto;
+package com.tp.timeAhead.data.responses;
 
 import java.time.LocalDateTime;
 import java.util.UUID;

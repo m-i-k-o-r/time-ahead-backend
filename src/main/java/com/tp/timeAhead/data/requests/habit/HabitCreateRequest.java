@@ -1,17 +1,15 @@
-package com.tp.timeAhead.data.dto;
+package com.tp.timeAhead.data.requests.habit;
 
 import java.time.LocalTime;
 import java.util.List;
 import java.util.UUID;
 
-public record HabitDto(
-        UUID id,
+public record HabitCreateRequest(
         String name,
         String description,
         LocalTime reminderTime,
         List<String> reminderDays,
-        int numReminder,
-        boolean done
+        UUID userId
 ) {
 
 }

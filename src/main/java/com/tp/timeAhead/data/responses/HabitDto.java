@@ -1,15 +1,17 @@
-package com.tp.timeAhead.data.forms.habit;
+package com.tp.timeAhead.data.responses;
 
 import java.time.LocalTime;
 import java.util.List;
 import java.util.UUID;
 
-public record HabitCreateForm(
+public record HabitDto(
+        UUID id,
         String name,
         String description,
         LocalTime reminderTime,
         List<String> reminderDays,
-        UUID userId
+        int numReminder,
+        boolean done
 ) {
 
 }

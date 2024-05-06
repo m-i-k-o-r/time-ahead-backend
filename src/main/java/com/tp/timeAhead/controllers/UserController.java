@@ -1,8 +1,8 @@
 package com.tp.timeAhead.controllers;
 
-import com.tp.timeAhead.data.dto.UserDto;
-import com.tp.timeAhead.data.forms.user.UserForm;
-import com.tp.timeAhead.service.UserService;
+import com.tp.timeAhead.data.responses.UserDto;
+import com.tp.timeAhead.data.requests.user.UserRequest;
+import com.tp.timeAhead.services.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,12 +16,12 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping()
-    public UserDto createUser(@RequestBody UserForm form) {
+    public UserDto createUser(@RequestBody UserRequest form) {
         return userService.createUser(form);
     }
 
     @PutMapping("/{id}")
-    public UserDto updateUser(@PathVariable UUID id, @RequestBody UserForm form) {
+    public UserDto updateUser(@PathVariable UUID id, @RequestBody UserRequest form) {
         return userService.updateUser(id, form);
     }
 

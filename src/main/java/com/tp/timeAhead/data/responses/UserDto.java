@@ -1,4 +1,4 @@
-package com.tp.timeAhead.data.dto;
+package com.tp.timeAhead.data.responses;
 
 import java.util.Set;
 import java.util.UUID;

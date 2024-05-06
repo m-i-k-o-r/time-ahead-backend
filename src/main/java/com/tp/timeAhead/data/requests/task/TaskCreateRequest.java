@@ -1,9 +1,9 @@
-package com.tp.timeAhead.data.forms.task;
+package com.tp.timeAhead.data.requests.task;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-public record TaskCreateForm(
+public record TaskCreateRequest(
         String name,
         String description,
         LocalDateTime reminder,

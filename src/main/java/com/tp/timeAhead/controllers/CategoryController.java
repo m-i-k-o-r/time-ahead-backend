@@ -1,9 +1,9 @@
 package com.tp.timeAhead.controllers;
 
-import com.tp.timeAhead.data.dto.CategoryDto;
-import com.tp.timeAhead.data.forms.category.CategoryCreateForm;
-import com.tp.timeAhead.data.forms.category.CategoryForm;
-import com.tp.timeAhead.service.CategoryService;
+import com.tp.timeAhead.data.responses.CategoryDto;
+import com.tp.timeAhead.data.requests.category.CategoryCreateRequest;
+import com.tp.timeAhead.data.requests.category.CategoryUpdateRequest;
+import com.tp.timeAhead.services.CategoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,12 +17,12 @@ public class CategoryController {
     private final CategoryService categoryService;
 
     @PostMapping()
-    public CategoryDto createCategory(@RequestBody CategoryCreateForm form) {
+    public CategoryDto createCategory(@RequestBody CategoryCreateRequest form) {
         return categoryService.createCategory(form);
     }
 
     @PutMapping("/{id}")
-    public CategoryDto updateCategory(@PathVariable UUID id, @RequestBody CategoryForm form) {
+    public CategoryDto updateCategory(@PathVariable UUID id, @RequestBody CategoryUpdateRequest form) {
         return categoryService.updateCategory(id, form);
     }
 

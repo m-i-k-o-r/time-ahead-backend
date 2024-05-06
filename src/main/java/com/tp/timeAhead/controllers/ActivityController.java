@@ -1,9 +1,9 @@
 package com.tp.timeAhead.controllers;
 
-import com.tp.timeAhead.data.dto.ActivityDto;
-import com.tp.timeAhead.data.forms.activity.ActivityCreateForm;
-import com.tp.timeAhead.data.forms.activity.ActivityForm;
-import com.tp.timeAhead.service.ActivityService;
+import com.tp.timeAhead.data.responses.ActivityDto;
+import com.tp.timeAhead.data.requests.activity.ActivityCreateRequest;
+import com.tp.timeAhead.data.requests.activity.ActivityUpdateRequest;
+import com.tp.timeAhead.services.ActivityService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
@@ -19,12 +19,12 @@ public class ActivityController {
     private final ActivityService activityService;
 
     @PostMapping()
-    public ActivityDto createActivity(@RequestBody ActivityCreateForm form) {
+    public ActivityDto createActivity(@RequestBody ActivityCreateRequest form) {
         return activityService.createActivity(form);
     }
 
     @PutMapping("/{id}")
-    public ActivityDto updateActivity(@PathVariable UUID id, @RequestBody ActivityForm form) {
+    public ActivityDto updateActivity(@PathVariable UUID id, @RequestBody ActivityUpdateRequest form) {
         return activityService.updateActivity(id, form);
     }
 

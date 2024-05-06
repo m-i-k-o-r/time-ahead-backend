@@ -1,10 +1,10 @@
-package com.tp.timeAhead.service;
+package com.tp.timeAhead.services;
 
-import com.tp.timeAhead.data.dto.CategoryDto;
-import com.tp.timeAhead.data.forms.category.CategoryCreateForm;
-import com.tp.timeAhead.data.forms.category.CategoryForm;
+import com.tp.timeAhead.data.responses.CategoryDto;
+import com.tp.timeAhead.data.requests.category.CategoryCreateRequest;
+import com.tp.timeAhead.data.requests.category.CategoryUpdateRequest;
 import com.tp.timeAhead.data.mappers.CategoryMapper;
-import com.tp.timeAhead.exception.NotFoundException;
+import com.tp.timeAhead.exceptions.NotFoundException;
 import com.tp.timeAhead.models.Category;
 import com.tp.timeAhead.repos.CategoryRepository;
 import com.tp.timeAhead.repos.UserRepository;
@@ -20,14 +20,14 @@ public class CategoryService {
     private final CategoryRepository categoryRepository;
     private final UserRepository userRepository;
 
-    public CategoryDto createCategory(CategoryCreateForm form) {
+    public CategoryDto createCategory(CategoryCreateRequest form) {
         return CategoryMapper.INSTANCE.toDto(categoryRepository.save(Category.builder()
                 .name(form.name())
                 .user(userRepository.findById(form.userId()).orElseThrow(() -> new NotFoundException("User with this id not found")))
                 .build()));
     }
 
-    public CategoryDto updateCategory(UUID id, CategoryForm form) {
+    public CategoryDto updateCategory(UUID id, CategoryUpdateRequest form) {
         Category category = categoryRepository.findById(id).orElseThrow(() -> new NotFoundException("Category with this id not found"));
         category.setName(form.name());
         return CategoryMapper.INSTANCE.toDto(categoryRepository.save(category));

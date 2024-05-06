@@ -1,6 +1,6 @@
 package com.tp.timeAhead.data.mappers;
 
-import com.tp.timeAhead.data.dto.ActivityDto;
+import com.tp.timeAhead.data.responses.ActivityDto;
 import com.tp.timeAhead.models.Activity;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
