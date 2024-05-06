@@ -1,9 +1,9 @@
 package com.tp.timeAhead.controllers;
 
-import com.tp.timeAhead.data.dto.TaskDto;
-import com.tp.timeAhead.data.forms.task.TaskCreateForm;
-import com.tp.timeAhead.data.forms.task.TaskForm;
-import com.tp.timeAhead.service.TaskService;
+import com.tp.timeAhead.data.responses.TaskDto;
+import com.tp.timeAhead.data.requests.task.TaskCreateRequest;
+import com.tp.timeAhead.data.requests.task.TaskUpdateRequest;
+import com.tp.timeAhead.services.TaskService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,12 +17,12 @@ public class TaskController {
     private final TaskService taskService;
 
     @PostMapping()
-    public TaskDto createTask(@RequestBody TaskCreateForm form) {
+    public TaskDto createTask(@RequestBody TaskCreateRequest form) {
         return taskService.createTask(form);
     }
 
     @PutMapping("/{id}")
-    public TaskDto updateTask(@PathVariable UUID id, @RequestBody TaskForm form) {
+    public TaskDto updateTask(@PathVariable UUID id, @RequestBody TaskUpdateRequest form) {
         return taskService.updateTask(id, form);
     }
 

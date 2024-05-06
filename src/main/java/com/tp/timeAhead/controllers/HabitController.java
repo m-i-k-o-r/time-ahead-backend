@@ -1,9 +1,9 @@
 package com.tp.timeAhead.controllers;
 
-import com.tp.timeAhead.data.dto.HabitDto;
-import com.tp.timeAhead.data.forms.habit.HabitCreateForm;
-import com.tp.timeAhead.data.forms.habit.HabitForm;
-import com.tp.timeAhead.service.HabitService;
+import com.tp.timeAhead.data.responses.HabitDto;
+import com.tp.timeAhead.data.requests.habit.HabitCreateRequest;
+import com.tp.timeAhead.data.requests.habit.HabitUpdateRequest;
+import com.tp.timeAhead.services.HabitService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,12 +17,12 @@ public class HabitController {
     private final HabitService habitService;
 
     @PostMapping()
-    public HabitDto createHabit(@RequestBody HabitCreateForm form) {
+    public HabitDto createHabit(@RequestBody HabitCreateRequest form) {
         return habitService.createHabit(form);
     }
 
     @PutMapping("/{id}")
-    public HabitDto updateHabit(@PathVariable UUID id, @RequestBody HabitForm form) {
+    public HabitDto updateHabit(@PathVariable UUID id, @RequestBody HabitUpdateRequest form) {
         return habitService.updateHabit(id, form);
     }
 

@@ -1,6 +1,6 @@
 package com.tp.timeAhead.data.mappers;
 
-import com.tp.timeAhead.data.dto.HabitDto;
+import com.tp.timeAhead.data.responses.HabitDto;
 import com.tp.timeAhead.models.Habit;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
