@@ -1,8 +1,8 @@
 package com.tp.timeAhead.services;
 
-import com.tp.timeAhead.data.responses.UserDto;
-import com.tp.timeAhead.data.requests.user.UserRequest;
 import com.tp.timeAhead.data.mappers.UserMapper;
+import com.tp.timeAhead.data.requests.user.UserRequest;
+import com.tp.timeAhead.data.responses.UserDto;
 import com.tp.timeAhead.exceptions.NotFoundException;
 import com.tp.timeAhead.models.User;
 import com.tp.timeAhead.repos.UserRepository;
@@ -25,14 +25,14 @@ public class UserService {
     }
 
     public UserDto updateUser(UUID id, UserRequest form) {
-        User user = userRepository.findById(id).orElseThrow(() -> new NotFoundException("User with this id not found"));
+        User user = userRepository.findById(id).orElseThrow(() -> new NotFoundException("Пользователь с этим id не найден"));
         user.setEmail(form.email());
         user.setPassword(form.password());
         return UserMapper.INSTANCE.toDto(userRepository.save(user));
     }
 
     public UserDto getUser(UUID id) {
-        return UserMapper.INSTANCE.toDto(userRepository.findById(id).orElseThrow(() -> new NotFoundException("User with this id not found")));
+        return UserMapper.INSTANCE.toDto(userRepository.findById(id).orElseThrow(() -> new NotFoundException("Пользователь с этим id не найден")));
     }
 
     public List<UserDto> getAllUser() {
