@@ -1,9 +1,9 @@
 package com.tp.timeAhead.services;
 
-import com.tp.timeAhead.data.responses.HabitDto;
+import com.tp.timeAhead.data.mappers.HabitMapper;
 import com.tp.timeAhead.data.requests.habit.HabitCreateRequest;
 import com.tp.timeAhead.data.requests.habit.HabitUpdateRequest;
-import com.tp.timeAhead.data.mappers.HabitMapper;
+import com.tp.timeAhead.data.responses.HabitDto;
 import com.tp.timeAhead.exceptions.NotFoundException;
 import com.tp.timeAhead.models.Habit;
 import com.tp.timeAhead.repos.HabitRepository;
@@ -31,12 +31,12 @@ public class HabitService {
                 .repeatReminder(cron)
                 .numReminder(0)
                 .isDone(false)
-                .user(userRepository.findById(form.userId()).orElseThrow(() -> new NotFoundException("User with this id not found")))
+                .user(userRepository.findById(form.userId()).orElseThrow(() -> new NotFoundException("Пользователь с этим id не найден")))
                 .build()));
     }
 
     public HabitDto updateHabit(UUID id, HabitUpdateRequest form) {
-        Habit habit = habitRepository.findById(id).orElseThrow(() -> new NotFoundException("Habit with this id not found"));
+        Habit habit = habitRepository.findById(id).orElseThrow(() -> new NotFoundException("Привычка с этим id не найдена"));
         habit.setName(form.name());
         habit.setDescription(form.description());
         String cron = String.format("0 %s %s * * %s",
@@ -48,7 +48,7 @@ public class HabitService {
     }
 
     public HabitDto changeCompleteHabit(UUID id) {
-        Habit habit = habitRepository.findById(id).orElseThrow(() -> new NotFoundException("Habit with this id not found"));
+        Habit habit = habitRepository.findById(id).orElseThrow(() -> new NotFoundException("Привычка с этим id не найдена"));
         if (habit.isDone()) {
             habit.setNumReminder(habit.getNumReminder() - 1);
             habit.setDone(false);
@@ -60,19 +60,19 @@ public class HabitService {
     }
 
     public HabitDto enableHabit(UUID id) {
-        Habit habit = habitRepository.findById(id).orElseThrow(() -> new NotFoundException("Habit with this id not found"));
+        Habit habit = habitRepository.findById(id).orElseThrow(() -> new NotFoundException("Привычка с этим id не найдена"));
         habit.setDone(false);
         return HabitMapper.INSTANCE.toDto(habitRepository.save(habit));
     }
 
     public HabitDto changeEndingHabit(UUID id) {
-        Habit habit = habitRepository.findById(id).orElseThrow(() -> new NotFoundException("Habit with this id not found"));
+        Habit habit = habitRepository.findById(id).orElseThrow(() -> new NotFoundException("Привычка с этим id не найдена"));
         habit.setNumReminder(habit.getNumReminder() * -1);
         return HabitMapper.INSTANCE.toDto(habitRepository.save(habit));
     }
 
     public HabitDto getHabit(UUID id) {
-        return HabitMapper.INSTANCE.toDto(habitRepository.findById(id).orElseThrow(() -> new NotFoundException("Habit with this id not found")));
+        return HabitMapper.INSTANCE.toDto(habitRepository.findById(id).orElseThrow(() -> new NotFoundException("Привычка с этим id не найдена")));
     }
 
     public List<HabitDto> getAllHabit(UUID userId, String day) {

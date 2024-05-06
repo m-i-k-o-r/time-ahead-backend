@@ -1,9 +1,9 @@
 package com.tp.timeAhead.services;
 
-import com.tp.timeAhead.data.responses.ActivityDto;
+import com.tp.timeAhead.data.mappers.ActivityMapper;
 import com.tp.timeAhead.data.requests.activity.ActivityCreateRequest;
 import com.tp.timeAhead.data.requests.activity.ActivityUpdateRequest;
-import com.tp.timeAhead.data.mappers.ActivityMapper;
+import com.tp.timeAhead.data.responses.ActivityDto;
 import com.tp.timeAhead.exceptions.NotFoundException;
 import com.tp.timeAhead.models.Activity;
 import com.tp.timeAhead.repos.ActivityRepository;
@@ -29,23 +29,23 @@ public class ActivityService {
                 .description(form.description())
                 .startTime(form.startTime())
                 .endTime(form.endTime())
-                .category(categoryRepository.findById(form.categoryId()).orElseThrow(() -> new NotFoundException("Category with this id not found")))
-                .user(userRepository.findById(form.userId()).orElseThrow(() -> new NotFoundException("User with this id not found")))
+                .category(categoryRepository.findById(form.categoryId()).orElseThrow(() -> new NotFoundException("Категория с этим id не найдена")))
+                .user(userRepository.findById(form.userId()).orElseThrow(() -> new NotFoundException("Пользователь с этим id не найден")))
                 .build()));
     }
 
     public ActivityDto updateActivity(UUID id, ActivityUpdateRequest form) {
-        Activity activity = activityRepository.findById(id).orElseThrow(() -> new NotFoundException("Activity with this id not found"));
+        Activity activity = activityRepository.findById(id).orElseThrow(() -> new NotFoundException("Активность с этим id не найдена"));
         activity.setName(form.name());
         activity.setDescription(form.description());
         activity.setStartTime(form.startTime());
         activity.setEndTime(form.endTime());
-        activity.setCategory(categoryRepository.findById(form.categoryId()).orElseThrow(() -> new NotFoundException("Category with this id not found")));
+        activity.setCategory(categoryRepository.findById(form.categoryId()).orElseThrow(() -> new NotFoundException("Категория с этим id не найдена")));
         return ActivityMapper.INSTANCE.toDto(activityRepository.save(activity));
     }
 
     public ActivityDto getActivity(UUID id) {
-        return ActivityMapper.INSTANCE.toDto(activityRepository.findById(id).orElseThrow(() -> new NotFoundException("Activity with this id not found")));
+        return ActivityMapper.INSTANCE.toDto(activityRepository.findById(id).orElseThrow(() -> new NotFoundException("Активность с этим id не найдена")));
     }
 
     public List<ActivityDto> getAllActivity(UUID userId, LocalDate data, UUID categoryId) {
