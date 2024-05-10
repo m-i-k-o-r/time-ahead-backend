@@ -1,6 +1,7 @@
 package com.tp.timeAhead.controllers;
 
 import com.tp.timeAhead.data.requests.habit.HabitCreateRequest;
+import com.tp.timeAhead.data.requests.habit.HabitUpdateFlagRequest;
 import com.tp.timeAhead.data.requests.habit.HabitUpdateRequest;
 import com.tp.timeAhead.data.responses.HabitDto;
 import com.tp.timeAhead.services.HabitService;
@@ -21,6 +22,7 @@ public class HabitController {
 
     @Operation(
             summary = "Создать привычку",
+            description = "reminderTime следует передавать не в формате объекта, а строки, т.е. в формате \"HH:mm\" или \"HH:mm:ss\"",
             responses = {
                     @ApiResponse(
                             responseCode = "200",
@@ -34,6 +36,7 @@ public class HabitController {
 
     @Operation(
             summary = "Изменить привычку",
+            description = "reminderTime следует передавать не в формате объекта, а строки, т.е. в формате \"HH:mm\" или \"HH:mm:ss\"",
             responses = {
                     @ApiResponse(
                             responseCode = "200",
@@ -46,47 +49,22 @@ public class HabitController {
     }
 
     @Operation(
-            summary = "Измененить завершение привычки",
-            description = "Если done = false, то оно измениться на true и numReminder++, когда была поставлена отметка выполения привычки; " +
-                    "Если done = true, то оно измениться на false и numReminder--, если отметка привычки была убрана",
+            summary = "Измененить поля-флаги привычки",
+            description = "changeComplete - меняет флаг done на противоположный и меняет numReminder, т.е. " +
+                    "если done = false, то оно измениться на true и numReminder++, когда была поставлена отметка выполения привычки, " +
+                    "а если done = true, то оно измениться на false и numReminder--, если отметка привычки была убрана; " +
+                    "resetDone - поле done станет false, т.е. привычка сбросит отметку выполнения (например по завершению дня); " +
+                    "changeEnd - меняет флаг end на противоположный (закончена ли привычка или нет);" +
+                    "Отправлять надо все флаги, но только один из которых должен быть true (1 - true, 2 оставшихся  - false)",
             responses = {
                     @ApiResponse(
                             responseCode = "200",
                             description = "Все привычки получены")
             })
     @ResponseStatus(HttpStatus.OK)
-    @PutMapping("/{id}/complete")
-    public HabitDto changeCompleteHabit(@PathVariable UUID id) {
-        return habitService.changeCompleteHabit(id);
-    }
-
-    @Operation(
-            summary = "Измененить отметку привычки",
-            description = "Поле done станет false, т.е. привычка сбросит отметку выполнения (например по завершению дня)",
-            responses = {
-                    @ApiResponse(
-                            responseCode = "200",
-                            description = "Все привычки получены")
-            })
-    @ResponseStatus(HttpStatus.OK)
-    @PutMapping("/{id}/enable")
-    public HabitDto enableHabit(@PathVariable UUID id) {
-        return habitService.enableHabit(id);
-    }
-
-    @Operation(
-            summary = "Изменить активность привычки",
-            description = "Если numReminder имеет отрицательное значение - привычка завершена, если положительное - активна; " +
-                    "Вызов этого метода меняет значение этого поля на противоположное",
-            responses = {
-                    @ApiResponse(
-                            responseCode = "200",
-                            description = "Все привычки получены")
-            })
-    @ResponseStatus(HttpStatus.OK)
-    @PutMapping("/{id}/end")
-    public HabitDto changeEndingHabit(@PathVariable UUID id) {
-        return habitService.changeEndingHabit(id);
+    @PutMapping("/{id}/flag")
+    public HabitDto updateFlagHabit(@PathVariable UUID id, @RequestBody HabitUpdateFlagRequest form) {
+        return habitService.updateFlagHabit(id, form);
     }
 
     @Operation(
@@ -104,8 +82,8 @@ public class HabitController {
 
     @Operation(
             summary = "Получить все привычки",
-            description = "day - день недели за который запрашиваются привычки; " +
-                    "Если его не передать, то будут просто получены все привычки",
+            description = "day - день недели за который запрашиваются привычки, eсли его не передать, то будут просто получены все привычки; " +
+                    "Флаг isEnd отвечает за то, каким будет список: из завершенных привычек или еще не завершенных",
             responses = {
                     @ApiResponse(
                             responseCode = "200",
@@ -114,8 +92,9 @@ public class HabitController {
     @ResponseStatus(HttpStatus.OK)
     @GetMapping()
     public List<HabitDto> getAllHabits(@RequestParam UUID userId,
-                                       @RequestParam(required = false) String day) {
-        return habitService.getAllHabit(userId, day);
+                                       @RequestParam(required = false) String day,
+                                       @RequestParam(defaultValue = "false") boolean isEnd) {
+        return habitService.getAllHabit(userId, day, isEnd);
     }
 
     @Operation(
