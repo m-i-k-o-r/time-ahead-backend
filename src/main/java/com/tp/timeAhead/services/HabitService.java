@@ -2,6 +2,7 @@ package com.tp.timeAhead.services;
 
 import com.tp.timeAhead.data.mappers.HabitMapper;
 import com.tp.timeAhead.data.requests.habit.HabitCreateRequest;
+import com.tp.timeAhead.data.requests.habit.HabitUpdateFlagRequest;
 import com.tp.timeAhead.data.requests.habit.HabitUpdateRequest;
 import com.tp.timeAhead.data.responses.HabitDto;
 import com.tp.timeAhead.exceptions.NotFoundException;
@@ -47,39 +48,32 @@ public class HabitService {
         return HabitMapper.INSTANCE.toDto(habitRepository.save(habit));
     }
 
-    public HabitDto changeCompleteHabit(UUID id) {
+    public HabitDto updateFlagHabit(UUID id, HabitUpdateFlagRequest form) {
         Habit habit = habitRepository.findById(id).orElseThrow(() -> new NotFoundException("Привычка с этим id не найдена"));
-        if (habit.isDone()) {
-            habit.setNumReminder(habit.getNumReminder() - 1);
+        if (form.changeComplete()) {
+            if (habit.isDone()) {
+                habit.setNumReminder(habit.getNumReminder() - 1);
+            } else {
+                habit.setNumReminder(habit.getNumReminder() + 1);
+            }
+            habit.setDone(!habit.isDone());
+        } else if (form.resetDone()) {
             habit.setDone(false);
-        } else {
-            habit.setNumReminder(habit.getNumReminder() + 1);
-            habit.setDone(true);
+        } else if (form.changeEnd()) {
+            habit.setEnd(!habit.isEnd());
         }
         return HabitMapper.INSTANCE.toDto(habitRepository.save(habit));
     }
 
-    public HabitDto enableHabit(UUID id) {
-        Habit habit = habitRepository.findById(id).orElseThrow(() -> new NotFoundException("Привычка с этим id не найдена"));
-        habit.setDone(false);
-        return HabitMapper.INSTANCE.toDto(habitRepository.save(habit));
-    }
-
-    public HabitDto changeEndingHabit(UUID id) {
-        Habit habit = habitRepository.findById(id).orElseThrow(() -> new NotFoundException("Привычка с этим id не найдена"));
-        habit.setNumReminder(habit.getNumReminder() * -1);
-        return HabitMapper.INSTANCE.toDto(habitRepository.save(habit));
-    }
-
     public HabitDto getHabit(UUID id) {
-        return HabitMapper.INSTANCE.toDto(habitRepository.findById(id).orElseThrow(() -> new NotFoundException("Привычка с этим id не найдена")));
+        return HabitMapper.INSTANCE.toDto(habitRepository.findById(id).orElseThrow(() -> new NotFoundException("Habit with this id not found")));
     }
 
-    public List<HabitDto> getAllHabit(UUID userId, String day) {
+    public List<HabitDto> getAllHabit(UUID userId, String day, boolean isEnd) {
         if (day == null) {
-            return HabitMapper.INSTANCE.toDto(habitRepository.findAll(userId));
+            return HabitMapper.INSTANCE.toDto(habitRepository.findAll(userId, isEnd));
         } else {
-            return HabitMapper.INSTANCE.toDto(habitRepository.findAllByDay(userId, day));
+            return HabitMapper.INSTANCE.toDto(habitRepository.findAllByDay(userId, day, isEnd));
         }
     }
 

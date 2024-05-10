@@ -11,7 +11,8 @@ public record HabitDto(
         LocalTime reminderTime,
         List<String> reminderDays,
         int numReminder,
-        boolean done
+        boolean done,
+        boolean end
 ) {
 
 }

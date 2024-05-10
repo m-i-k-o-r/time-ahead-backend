@@ -21,6 +21,7 @@ public class Habit {
     private String repeatReminder;
     private int numReminder;
     private boolean isDone;
+    private boolean isEnd;
 
     @ManyToOne
     @JoinColumn(name = "user_id")

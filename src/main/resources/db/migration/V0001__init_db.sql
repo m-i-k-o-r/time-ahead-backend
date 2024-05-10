@@ -36,6 +36,7 @@ create table habit
     repeat_reminder text    not null,
     num_reminder    int     not null,
     is_done         boolean not null,
+    is_end          boolean not null,
     user_id         uuid    not null,
 
     foreign key (user_id) references account (id) on delete cascade
