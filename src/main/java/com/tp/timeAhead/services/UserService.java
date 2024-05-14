@@ -2,11 +2,15 @@ package com.tp.timeAhead.services;
 
 import com.tp.timeAhead.data.mappers.UserMapper;
 import com.tp.timeAhead.data.requests.user.UserRequest;
+import com.tp.timeAhead.data.responses.AuthenticationDto;
 import com.tp.timeAhead.data.responses.UserDto;
 import com.tp.timeAhead.exceptions.NotFoundException;
 import com.tp.timeAhead.models.User;
 import com.tp.timeAhead.repos.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,12 +20,33 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class UserService {
     private final UserRepository userRepository;
+    private final JwtService jwtService;
+    private final PasswordEncoder passwordEncoder;
+    private final AuthenticationManager authenticationManager;
 
-    public UserDto createUser(UserRequest form) {
-        return UserMapper.INSTANCE.toDto(userRepository.save(User.builder()
+    public AuthenticationDto registration(UserRequest form) {
+        User user = userRepository.save(User.builder()
                 .email(form.email())
-                .password(form.password())
-                .build()));
+                .password(passwordEncoder.encode(form.password()))
+                .build());
+        var jwtToken = jwtService.generateToken(user);
+        return AuthenticationDto.builder()
+                .accessToken(jwtToken)
+                .build();
+    }
+
+    public AuthenticationDto authenticate(UserRequest form) {
+        authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(
+                        form.email(),
+                        form.password()
+                )
+        );
+        User user = userRepository.findByEmail(form.email()).orElseThrow(() -> new NotFoundException("Пользователь с этой почтой не найден"));
+        var jwtToken = jwtService.generateToken(user);
+        return AuthenticationDto.builder()
+                .accessToken(jwtToken)
+                .build();
     }
 
     public UserDto updateUser(UUID id, UserRequest form) {
