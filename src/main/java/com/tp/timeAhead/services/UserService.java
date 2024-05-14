@@ -10,6 +10,8 @@ import com.tp.timeAhead.repos.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -42,7 +44,8 @@ public class UserService {
                         form.password()
                 )
         );
-        User user = userRepository.findByEmail(form.email()).orElseThrow(() -> new NotFoundException("Пользователь с этой почтой не найден"));
+        User user = userRepository.findByEmail(form.email())
+                .orElseThrow(() -> new NotFoundException("Пользователь с этой почтой не найден"));
         var jwtToken = jwtService.generateToken(user);
         return AuthenticationDto.builder()
                 .accessToken(jwtToken)
@@ -50,14 +53,18 @@ public class UserService {
     }
 
     public UserDto updateUser(UUID id, UserRequest form) {
-        User user = userRepository.findById(id).orElseThrow(() -> new NotFoundException("Пользователь с этим id не найден"));
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Пользователь с этим id не найден"));
+
         user.setEmail(form.email());
         user.setPassword(form.password());
+
         return UserMapper.INSTANCE.toDto(userRepository.save(user));
     }
 
     public UserDto getUser(UUID id) {
-        return UserMapper.INSTANCE.toDto(userRepository.findById(id).orElseThrow(() -> new NotFoundException("Пользователь с этим id не найден")));
+        return UserMapper.INSTANCE.toDto(userRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Пользователь с этим id не найден")));
     }
 
     public List<UserDto> getAllUser() {
@@ -66,5 +73,10 @@ public class UserService {
 
     public void deleteUser(UUID id) {
         userRepository.deleteById(id);
+    }
+
+    public User tokenToUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        return (User) authentication.getCredentials();
     }
 }

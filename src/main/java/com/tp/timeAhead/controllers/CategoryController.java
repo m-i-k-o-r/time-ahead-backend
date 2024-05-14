@@ -66,8 +66,8 @@ public class CategoryController {
             })
     @ResponseStatus(HttpStatus.OK)
     @GetMapping()
-    public List<CategoryDto> getAllCategories(@RequestParam UUID userId) {
-        return categoryService.getAllCategory(userId);
+    public List<CategoryDto> getAllCategories() {
+        return categoryService.getAllCategory();
     }
 
     @Operation(

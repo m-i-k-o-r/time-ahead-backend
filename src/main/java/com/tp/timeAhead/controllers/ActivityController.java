@@ -70,10 +70,9 @@ public class ActivityController {
             })
     @ResponseStatus(HttpStatus.OK)
     @GetMapping()
-    public List<ActivityDto> getAllActivities(@RequestParam UUID userId,
-                                              @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate data,
+    public List<ActivityDto> getAllActivities(@RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate data,
                                               @RequestParam(required = false) UUID categoryId) {
-        return activityService.getAllActivity(userId, data, categoryId);
+        return activityService.getAllActivity(data, categoryId);
     }
 
     @Operation(

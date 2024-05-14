@@ -90,10 +90,9 @@ public class HabitController {
             })
     @ResponseStatus(HttpStatus.OK)
     @GetMapping()
-    public List<HabitDto> getAllHabits(@RequestParam UUID userId,
-                                       @RequestParam(required = false) String day,
+    public List<HabitDto> getAllHabits(@RequestParam(required = false) String day,
                                        @RequestParam(defaultValue = "false") boolean isEnd) {
-        return habitService.getAllHabit(userId, day, isEnd);
+        return habitService.getAllHabit(day, isEnd);
     }
 
     @Operation(

@@ -1,8 +1,7 @@
 package com.tp.timeAhead.services;
 
 import com.tp.timeAhead.data.mappers.TaskMapper;
-import com.tp.timeAhead.data.requests.task.TaskCreateRequest;
-import com.tp.timeAhead.data.requests.task.TaskUpdateRequest;
+import com.tp.timeAhead.data.requests.task.TaskRequest;
 import com.tp.timeAhead.data.responses.TaskDto;
 import com.tp.timeAhead.exceptions.NotFoundException;
 import com.tp.timeAhead.models.Task;
@@ -20,39 +19,58 @@ public class TaskService {
     private final TaskRepository taskRepository;
     private final UserRepository userRepository;
 
-    public TaskDto createTask(TaskCreateRequest form) {
+    private final UserService userService;
+
+    public TaskDto createTask(TaskRequest form) {
         return TaskMapper.INSTANCE.toDto(taskRepository.save(Task.builder()
                 .name(form.name())
                 .description(form.description())
                 .reminder(form.reminder())
                 .isDone(false)
-                .user(userRepository.findById(form.userId()).orElseThrow(() -> new NotFoundException("Пользователь с этим id не найден")))
+                .user(userRepository.findById(userService.tokenToUser().getId())
+                        .orElseThrow(() -> new NotFoundException("Пользователь с этим id не найден")))
                 .build()));
     }
 
-    public TaskDto updateTask(UUID id, TaskUpdateRequest form) {
-        Task task = taskRepository.findById(id).orElseThrow(() -> new NotFoundException("Задача с этим id не найдена"));
+    public TaskDto updateTask(UUID id, TaskRequest form) {
+        Task task = taskRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Задача с этим id не найдена"));
+
         task.setName(form.name());
         task.setDescription(form.description());
         task.setReminder(form.reminder());
+
         return TaskMapper.INSTANCE.toDto(taskRepository.save(task));
     }
 
     public TaskDto changeCompleteTask(UUID id) {
-        Task task = taskRepository.findById(id).orElseThrow(() -> new NotFoundException("Задача с этим id не найдена"));
+        Task task = taskRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Задача с этим id не найдена"));
+
         task.setDone(!task.isDone());
+
         return TaskMapper.INSTANCE.toDto(taskRepository.save(task));
     }
 
     public TaskDto getTask(UUID id) {
-        return TaskMapper.INSTANCE.toDto(taskRepository.findById(id).orElseThrow(() -> new NotFoundException("Задача с этим id не найдена")));
+        return TaskMapper.INSTANCE.toDto(taskRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Задача с этим id не найдена")));
     }
 
-    public List<TaskDto> getAllTask(UUID userId, String reminderSortDirection, Boolean isDone) {
+    public List<TaskDto> getAllTask(String reminderSortDirection, Boolean isDone) {
         if (reminderSortDirection.equalsIgnoreCase("asc")) {
-            return TaskMapper.INSTANCE.toDto(taskRepository.findAllByOrderByReminderAsc(userId, isDone));
+            return TaskMapper.INSTANCE.toDto(
+                    taskRepository.findAllByOrderByReminderAsc(
+                            userService.tokenToUser().getId(),
+                            isDone
+                    ));
         } else if (reminderSortDirection.equalsIgnoreCase("desc")) {
-            return TaskMapper.INSTANCE.toDto(taskRepository.findAllByOrderByReminderDesc(userId, isDone));
+            return TaskMapper.INSTANCE.toDto(
+                    taskRepository.findAllByOrderByReminderDesc(
+                            userService.tokenToUser().
+                                    getId(),
+                            isDone
+                    ));
         }
 
         throw new NotFoundException("Неверное значение SortDirection: " + reminderSortDirection);
