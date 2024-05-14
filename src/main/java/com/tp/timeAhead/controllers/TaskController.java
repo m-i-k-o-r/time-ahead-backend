@@ -1,8 +1,7 @@
 package com.tp.timeAhead.controllers;
 
 import com.tp.timeAhead.data.responses.TaskDto;
-import com.tp.timeAhead.data.requests.task.TaskCreateRequest;
-import com.tp.timeAhead.data.requests.task.TaskUpdateRequest;
+import com.tp.timeAhead.data.requests.task.TaskRequest;
 import com.tp.timeAhead.services.TaskService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -28,7 +27,7 @@ public class TaskController {
             })
     @ResponseStatus(HttpStatus.OK)
     @PostMapping()
-    public TaskDto createTask(@RequestBody TaskCreateRequest form) {
+    public TaskDto createTask(@RequestBody TaskRequest form) {
         return taskService.createTask(form);
     }
 
@@ -41,7 +40,7 @@ public class TaskController {
             })
     @ResponseStatus(HttpStatus.OK)
     @PutMapping("/{id}")
-    public TaskDto updateTask(@PathVariable UUID id, @RequestBody TaskUpdateRequest form) {
+    public TaskDto updateTask(@PathVariable UUID id, @RequestBody TaskRequest form) {
         return taskService.updateTask(id, form);
     }
 

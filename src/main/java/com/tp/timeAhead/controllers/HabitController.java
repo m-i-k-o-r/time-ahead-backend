@@ -1,8 +1,7 @@
 package com.tp.timeAhead.controllers;
 
-import com.tp.timeAhead.data.requests.habit.HabitCreateRequest;
+import com.tp.timeAhead.data.requests.habit.HabitRequest;
 import com.tp.timeAhead.data.requests.habit.HabitUpdateFlagRequest;
-import com.tp.timeAhead.data.requests.habit.HabitUpdateRequest;
 import com.tp.timeAhead.data.responses.HabitDto;
 import com.tp.timeAhead.services.HabitService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -30,7 +29,7 @@ public class HabitController {
             })
     @ResponseStatus(HttpStatus.OK)
     @PostMapping()
-    public HabitDto createHabit(@RequestBody HabitCreateRequest form) {
+    public HabitDto createHabit(@RequestBody HabitRequest form) {
         return habitService.createHabit(form);
     }
 
@@ -44,7 +43,7 @@ public class HabitController {
             })
     @ResponseStatus(HttpStatus.OK)
     @PutMapping("/{id}")
-    public HabitDto updateHabit(@PathVariable UUID id, @RequestBody HabitUpdateRequest form) {
+    public HabitDto updateHabit(@PathVariable UUID id, @RequestBody HabitRequest form) {
         return habitService.updateHabit(id, form);
     }
 

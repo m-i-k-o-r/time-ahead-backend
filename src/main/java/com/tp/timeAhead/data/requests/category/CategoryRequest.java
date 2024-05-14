@@ -1,6 +1,7 @@
 package com.tp.timeAhead.data.requests.category;
 
-public record CategoryUpdateRequest(
+
+public record CategoryRequest(
         String name
 ) {
 

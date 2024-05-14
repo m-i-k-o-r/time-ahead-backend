@@ -1,7 +1,6 @@
 package com.tp.timeAhead.controllers;
 
-import com.tp.timeAhead.data.requests.category.CategoryCreateRequest;
-import com.tp.timeAhead.data.requests.category.CategoryUpdateRequest;
+import com.tp.timeAhead.data.requests.category.CategoryRequest;
 import com.tp.timeAhead.data.responses.CategoryDto;
 import com.tp.timeAhead.services.CategoryService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -28,7 +27,7 @@ public class CategoryController {
             })
     @ResponseStatus(HttpStatus.OK)
     @PostMapping()
-    public CategoryDto createCategory(@RequestBody CategoryCreateRequest form) {
+    public CategoryDto createCategory(@RequestBody CategoryRequest form) {
         return categoryService.createCategory(form);
     }
 
@@ -41,7 +40,7 @@ public class CategoryController {
             })
     @ResponseStatus(HttpStatus.OK)
     @PutMapping("/{id}")
-    public CategoryDto updateCategory(@PathVariable UUID id, @RequestBody CategoryUpdateRequest form) {
+    public CategoryDto updateCategory(@PathVariable UUID id, @RequestBody CategoryRequest form) {
         return categoryService.updateCategory(id, form);
     }
 

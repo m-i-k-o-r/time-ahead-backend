@@ -1,7 +1,6 @@
 package com.tp.timeAhead.controllers;
 
-import com.tp.timeAhead.data.requests.activity.ActivityCreateRequest;
-import com.tp.timeAhead.data.requests.activity.ActivityUpdateRequest;
+import com.tp.timeAhead.data.requests.activity.ActivityRequest;
 import com.tp.timeAhead.data.responses.ActivityDto;
 import com.tp.timeAhead.services.ActivityService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -30,7 +29,7 @@ public class ActivityController {
             })
     @ResponseStatus(HttpStatus.OK)
     @PostMapping()
-    public ActivityDto createActivity(@RequestBody ActivityCreateRequest form) {
+    public ActivityDto createActivity(@RequestBody ActivityRequest form) {
         return activityService.createActivity(form);
     }
 
@@ -43,7 +42,7 @@ public class ActivityController {
             })
     @ResponseStatus(HttpStatus.OK)
     @PutMapping("/{id}")
-    public ActivityDto updateActivity(@PathVariable UUID id, @RequestBody ActivityUpdateRequest form) {
+    public ActivityDto updateActivity(@PathVariable UUID id, @RequestBody ActivityRequest form) {
         return activityService.updateActivity(id, form);
     }
 
