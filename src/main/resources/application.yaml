@@ -20,6 +20,10 @@ server:
     include-message: always
     include-binding-errors: always
 
+
+jwt:
+  key: F6B7C207C16A7D5090446647407C9C4349D0FC24252250DBDF3A064002BEBFC6
+
 #
 #logging:
 #  level:

@@ -1,8 +1,7 @@
 package com.tp.timeAhead.services;
 
 import com.tp.timeAhead.data.mappers.ActivityMapper;
-import com.tp.timeAhead.data.requests.activity.ActivityCreateRequest;
-import com.tp.timeAhead.data.requests.activity.ActivityUpdateRequest;
+import com.tp.timeAhead.data.requests.activity.ActivityRequest;
 import com.tp.timeAhead.data.responses.ActivityDto;
 import com.tp.timeAhead.exceptions.NotFoundException;
 import com.tp.timeAhead.models.Activity;
@@ -23,36 +22,54 @@ public class ActivityService {
     private final CategoryRepository categoryRepository;
     private final UserRepository userRepository;
 
-    public ActivityDto createActivity(ActivityCreateRequest form) {
+    private final UserService userService;
+
+    public ActivityDto createActivity(ActivityRequest form) {
         return ActivityMapper.INSTANCE.toDto(activityRepository.save(Activity.builder()
                 .name(form.name())
                 .description(form.description())
                 .startTime(form.startTime())
                 .endTime(form.endTime())
-                .category(categoryRepository.findById(form.categoryId()).orElseThrow(() -> new NotFoundException("Категория с этим id не найдена")))
-                .user(userRepository.findById(form.userId()).orElseThrow(() -> new NotFoundException("Пользователь с этим id не найден")))
+                .category(categoryRepository.findById(form.categoryId())
+                        .orElseThrow(() -> new NotFoundException("Категория с этим id не найдена")))
+                .user(userRepository.findById(userService.tokenToUser().getId())
+                        .orElseThrow(() -> new NotFoundException("Пользователь с этим id не найден")))
                 .build()));
     }
 
-    public ActivityDto updateActivity(UUID id, ActivityUpdateRequest form) {
-        Activity activity = activityRepository.findById(id).orElseThrow(() -> new NotFoundException("Активность с этим id не найдена"));
+    public ActivityDto updateActivity(UUID id, ActivityRequest form) {
+        Activity activity = activityRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Активность с этим id не найдена"));
+
         activity.setName(form.name());
         activity.setDescription(form.description());
         activity.setStartTime(form.startTime());
         activity.setEndTime(form.endTime());
-        activity.setCategory(categoryRepository.findById(form.categoryId()).orElseThrow(() -> new NotFoundException("Категория с этим id не найдена")));
+        activity.setCategory(categoryRepository.findById(form.categoryId())
+                .orElseThrow(() -> new NotFoundException("Категория с этим id не найдена")));
+
         return ActivityMapper.INSTANCE.toDto(activityRepository.save(activity));
     }
 
     public ActivityDto getActivity(UUID id) {
-        return ActivityMapper.INSTANCE.toDto(activityRepository.findById(id).orElseThrow(() -> new NotFoundException("Активность с этим id не найдена")));
+        return ActivityMapper.INSTANCE.toDto(activityRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Активность с этим id не найдена")));
     }
 
-    public List<ActivityDto> getAllActivity(UUID userId, LocalDate data, UUID categoryId) {
+    public List<ActivityDto> getAllActivity(LocalDate data, UUID categoryId) {
         if (categoryId == null) {
-            return ActivityMapper.INSTANCE.toDto(activityRepository.findAllByTime(userId, data));
+            return ActivityMapper.INSTANCE.toDto(
+                    activityRepository.findAllByTime(
+                            userService.tokenToUser().getId(),
+                            data
+                    ));
         } else {
-            return ActivityMapper.INSTANCE.toDto(activityRepository.findAllByTimeAndCategoryId(userId, data, categoryId));
+            return ActivityMapper.INSTANCE.toDto(
+                    activityRepository.findAllByTimeAndCategoryId(
+                            userService.tokenToUser().getId(),
+                            data,
+                            categoryId
+                    ));
         }
     }
 

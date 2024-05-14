@@ -1,10 +1,12 @@
 package com.tp.timeAhead.controllers;
 
-import com.tp.timeAhead.data.responses.UserDto;
 import com.tp.timeAhead.data.requests.user.UserRequest;
+import com.tp.timeAhead.data.responses.AuthenticationDto;
+import com.tp.timeAhead.data.responses.UserDto;
 import com.tp.timeAhead.services.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.security.SecurityRequirements;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -19,16 +21,31 @@ public class UserController {
     private final UserService userService;
 
     @Operation(
-            summary = "Создать пользователя",
+            summary = "Зарегистрировать пользователя",
             responses = {
                     @ApiResponse(
                             responseCode = "200",
                             description = "Пользователь создан")
             })
     @ResponseStatus(HttpStatus.OK)
-    @PostMapping()
-    public UserDto createUser(@RequestBody UserRequest form) {
-        return userService.createUser(form);
+    @SecurityRequirements
+    @PostMapping("/register")
+    public AuthenticationDto registration(@RequestBody UserRequest form) {
+        return userService.registration(form);
+    }
+
+    @Operation(
+            summary = "Аутентифицировать пользователя",
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "Пользователь аутентифицирован")
+            })
+    @ResponseStatus(HttpStatus.OK)
+    @SecurityRequirements
+    @PostMapping("/authenticate")
+    public AuthenticationDto authenticate(@RequestBody UserRequest form) {
+        return userService.authenticate(form);
     }
 
     @Operation(
