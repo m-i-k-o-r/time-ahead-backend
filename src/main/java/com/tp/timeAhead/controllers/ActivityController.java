@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -29,7 +30,7 @@ public class ActivityController {
             })
     @ResponseStatus(HttpStatus.OK)
     @PostMapping()
-    public ActivityDto createActivity(@RequestBody ActivityRequest form) {
+    public ActivityDto createActivity(@RequestBody @Validated ActivityRequest form) {
         return activityService.createActivity(form);
     }
 
@@ -42,7 +43,7 @@ public class ActivityController {
             })
     @ResponseStatus(HttpStatus.OK)
     @PutMapping("/{id}")
-    public ActivityDto updateActivity(@PathVariable UUID id, @RequestBody ActivityRequest form) {
+    public ActivityDto updateActivity(@PathVariable UUID id, @RequestBody @Validated ActivityRequest form) {
         return activityService.updateActivity(id, form);
     }
 
