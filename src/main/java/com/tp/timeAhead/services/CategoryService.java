@@ -1,7 +1,7 @@
 package com.tp.timeAhead.services;
 
 import com.tp.timeAhead.data.mappers.CategoryMapper;
-import com.tp.timeAhead.data.requests.category.CategoryRequest;
+import com.tp.timeAhead.data.requests.CategoryRequest;
 import com.tp.timeAhead.data.responses.CategoryDto;
 import com.tp.timeAhead.exceptions.ForbiddenException;
 import com.tp.timeAhead.exceptions.NotFoundException;

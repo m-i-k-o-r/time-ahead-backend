@@ -1,4 +1,4 @@
-package com.tp.timeAhead.data.requests.admin;
+package com.tp.timeAhead.data.requests;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;

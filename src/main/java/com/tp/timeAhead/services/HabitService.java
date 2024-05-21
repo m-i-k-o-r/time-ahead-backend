@@ -1,8 +1,8 @@
 package com.tp.timeAhead.services;
 
 import com.tp.timeAhead.data.mappers.HabitMapper;
-import com.tp.timeAhead.data.requests.habit.HabitRequest;
-import com.tp.timeAhead.data.requests.habit.HabitUpdateFlagRequest;
+import com.tp.timeAhead.data.requests.HabitRequest;
+import com.tp.timeAhead.data.requests.HabitUpdateFlagRequest;
 import com.tp.timeAhead.data.responses.HabitDto;
 import com.tp.timeAhead.exceptions.NotFoundException;
 import com.tp.timeAhead.models.Habit;

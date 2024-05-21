@@ -1,12 +1,13 @@
 package com.tp.timeAhead.controllers;
 
 import com.tp.timeAhead.data.responses.TaskDto;
-import com.tp.timeAhead.data.requests.task.TaskRequest;
+import com.tp.timeAhead.data.requests.TaskRequest;
 import com.tp.timeAhead.services.TaskService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -27,7 +28,7 @@ public class TaskController {
             })
     @ResponseStatus(HttpStatus.OK)
     @PostMapping()
-    public TaskDto createTask(@RequestBody TaskRequest form) {
+    public TaskDto createTask(@RequestBody @Validated TaskRequest form) {
         return taskService.createTask(form);
     }
 
@@ -40,7 +41,7 @@ public class TaskController {
             })
     @ResponseStatus(HttpStatus.OK)
     @PutMapping("/{id}")
-    public TaskDto updateTask(@PathVariable UUID id, @RequestBody TaskRequest form) {
+    public TaskDto updateTask(@PathVariable UUID id, @RequestBody @Validated TaskRequest form) {
         return taskService.updateTask(id, form);
     }
 

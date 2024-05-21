@@ -1,6 +1,6 @@
 package com.tp.timeAhead.controllers;
 
-import com.tp.timeAhead.data.requests.user.UserRequest;
+import com.tp.timeAhead.data.requests.UserRequest;
 import com.tp.timeAhead.data.responses.AuthenticationDto;
 import com.tp.timeAhead.data.responses.UserDto;
 import com.tp.timeAhead.services.UserService;
@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.security.SecurityRequirements;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -30,7 +31,7 @@ public class UserController {
     @ResponseStatus(HttpStatus.OK)
     @SecurityRequirements
     @PostMapping("/register")
-    public AuthenticationDto registration(@RequestBody UserRequest form) {
+    public AuthenticationDto registration(@RequestBody @Validated UserRequest form) {
         return userService.registration(form);
     }
 
@@ -44,7 +45,7 @@ public class UserController {
     @ResponseStatus(HttpStatus.OK)
     @SecurityRequirements
     @PostMapping("/authenticate")
-    public AuthenticationDto authenticate(@RequestBody UserRequest form) {
+    public AuthenticationDto authenticate(@RequestBody @Validated UserRequest form) {
         return userService.authenticate(form);
     }
 
@@ -57,7 +58,7 @@ public class UserController {
             })
     @ResponseStatus(HttpStatus.OK)
     @PutMapping("/{id}")
-    public UserDto updateUser(@PathVariable UUID id, @RequestBody UserRequest form) {
+    public UserDto updateUser(@PathVariable UUID id, @RequestBody @Validated UserRequest form) {
         return userService.updateUser(id, form);
     }
 

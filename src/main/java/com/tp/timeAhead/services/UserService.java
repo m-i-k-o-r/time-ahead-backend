@@ -1,9 +1,10 @@
 package com.tp.timeAhead.services;
 
 import com.tp.timeAhead.data.mappers.UserMapper;
-import com.tp.timeAhead.data.requests.user.UserRequest;
+import com.tp.timeAhead.data.requests.UserRequest;
 import com.tp.timeAhead.data.responses.AuthenticationDto;
 import com.tp.timeAhead.data.responses.UserDto;
+import com.tp.timeAhead.exceptions.ForbiddenException;
 import com.tp.timeAhead.exceptions.NotFoundException;
 import com.tp.timeAhead.models.User;
 import com.tp.timeAhead.repos.UserRepository;
@@ -26,6 +27,10 @@ public class UserService {
     private final AuthenticationManager authenticationManager;
 
     public AuthenticationDto registration(UserRequest form) {
+        if (userRepository.existsByEmail(form.email())) {
+            throw new ForbiddenException("Почта уже занята");
+        }
+
         User user = userRepository.save(User.builder()
                 .email(form.email())
                 .password(passwordEncoder.encode(form.password()))

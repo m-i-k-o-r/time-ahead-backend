@@ -1,7 +1,7 @@
 package com.tp.timeAhead.services;
 
 import com.tp.timeAhead.data.mappers.TaskMapper;
-import com.tp.timeAhead.data.requests.task.TaskRequest;
+import com.tp.timeAhead.data.requests.TaskRequest;
 import com.tp.timeAhead.data.responses.TaskDto;
 import com.tp.timeAhead.exceptions.NotFoundException;
 import com.tp.timeAhead.models.Task;

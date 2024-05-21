@@ -1,13 +1,14 @@
 package com.tp.timeAhead.controllers;
 
-import com.tp.timeAhead.data.requests.habit.HabitRequest;
-import com.tp.timeAhead.data.requests.habit.HabitUpdateFlagRequest;
+import com.tp.timeAhead.data.requests.HabitRequest;
+import com.tp.timeAhead.data.requests.HabitUpdateFlagRequest;
 import com.tp.timeAhead.data.responses.HabitDto;
 import com.tp.timeAhead.services.HabitService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -29,7 +30,7 @@ public class HabitController {
             })
     @ResponseStatus(HttpStatus.OK)
     @PostMapping()
-    public HabitDto createHabit(@RequestBody HabitRequest form) {
+    public HabitDto createHabit(@RequestBody @Validated HabitRequest form) {
         return habitService.createHabit(form);
     }
 
@@ -43,7 +44,7 @@ public class HabitController {
             })
     @ResponseStatus(HttpStatus.OK)
     @PutMapping("/{id}")
-    public HabitDto updateHabit(@PathVariable UUID id, @RequestBody HabitRequest form) {
+    public HabitDto updateHabit(@PathVariable UUID id, @RequestBody @Validated HabitRequest form) {
         return habitService.updateHabit(id, form);
     }
 
@@ -62,7 +63,7 @@ public class HabitController {
             })
     @ResponseStatus(HttpStatus.OK)
     @PutMapping("/{id}/flag")
-    public HabitDto updateFlagHabit(@PathVariable UUID id, @RequestBody HabitUpdateFlagRequest form) {
+    public HabitDto updateFlagHabit(@PathVariable UUID id, @RequestBody @Validated HabitUpdateFlagRequest form) {
         return habitService.updateFlagHabit(id, form);
     }
 
