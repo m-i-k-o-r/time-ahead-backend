@@ -5,6 +5,7 @@ import com.tp.timeAhead.data.requests.activity.ActivityRequest;
 import com.tp.timeAhead.data.responses.ActivityDto;
 import com.tp.timeAhead.exceptions.NotFoundException;
 import com.tp.timeAhead.models.Activity;
+import com.tp.timeAhead.models.User;
 import com.tp.timeAhead.repos.ActivityRepository;
 import com.tp.timeAhead.repos.CategoryRepository;
 import com.tp.timeAhead.repos.UserRepository;
@@ -22,7 +23,7 @@ public class ActivityService {
     private final CategoryRepository categoryRepository;
     private final UserRepository userRepository;
 
-    private final UserService userService;
+    private final JwtService jwtService;
 
     public ActivityDto createActivity(ActivityRequest form) {
         return ActivityMapper.INSTANCE.toDto(activityRepository.save(Activity.builder()
@@ -32,7 +33,7 @@ public class ActivityService {
                 .endTime(form.endTime())
                 .category(categoryRepository.findById(form.categoryId())
                         .orElseThrow(() -> new NotFoundException("Категория с этим id не найдена")))
-                .user(userRepository.findById(userService.tokenToUser().getId())
+                .user(userRepository.findById(((User) jwtService.extractUserDetails()).getId())
                         .orElseThrow(() -> new NotFoundException("Пользователь с этим id не найден")))
                 .build()));
     }
@@ -60,13 +61,13 @@ public class ActivityService {
         if (categoryId == null) {
             return ActivityMapper.INSTANCE.toDto(
                     activityRepository.findAllByTime(
-                            userService.tokenToUser().getId(),
+                            ((User) jwtService.extractUserDetails()).getId(),
                             data
                     ));
         } else {
             return ActivityMapper.INSTANCE.toDto(
                     activityRepository.findAllByTimeAndCategoryId(
-                            userService.tokenToUser().getId(),
+                            ((User) jwtService.extractUserDetails()).getId(),
                             data,
                             categoryId
                     ));
