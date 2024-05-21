@@ -1,4 +1,4 @@
-package com.tp.timeAhead.data.requests.activity;
+package com.tp.timeAhead.data.requests;
 
 import java.time.LocalDateTime;
 import java.util.UUID;

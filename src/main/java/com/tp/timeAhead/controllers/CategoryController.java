@@ -1,6 +1,6 @@
 package com.tp.timeAhead.controllers;
 
-import com.tp.timeAhead.data.requests.category.CategoryRequest;
+import com.tp.timeAhead.data.requests.CategoryRequest;
 import com.tp.timeAhead.data.responses.CategoryDto;
 import com.tp.timeAhead.services.CategoryService;
 import io.swagger.v3.oas.annotations.Operation;

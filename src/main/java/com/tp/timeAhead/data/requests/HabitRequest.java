@@ -1,4 +1,4 @@
-package com.tp.timeAhead.data.requests.habit;
+package com.tp.timeAhead.data.requests;
 
 import java.time.LocalTime;
 import java.util.List;

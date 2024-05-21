@@ -1,6 +1,6 @@
 package com.tp.timeAhead.controllers;
 
-import com.tp.timeAhead.data.requests.activity.ActivityRequest;
+import com.tp.timeAhead.data.requests.ActivityRequest;
 import com.tp.timeAhead.data.responses.ActivityDto;
 import com.tp.timeAhead.services.ActivityService;
 import io.swagger.v3.oas.annotations.Operation;

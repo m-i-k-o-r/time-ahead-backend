@@ -1,6 +1,6 @@
 package com.tp.timeAhead.controllers;
 
-import com.tp.timeAhead.data.requests.user.UserRequest;
+import com.tp.timeAhead.data.requests.UserRequest;
 import com.tp.timeAhead.data.responses.AuthenticationDto;
 import com.tp.timeAhead.data.responses.UserDto;
 import com.tp.timeAhead.services.UserService;

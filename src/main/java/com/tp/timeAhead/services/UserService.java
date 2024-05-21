@@ -1,7 +1,7 @@
 package com.tp.timeAhead.services;
 
 import com.tp.timeAhead.data.mappers.UserMapper;
-import com.tp.timeAhead.data.requests.user.UserRequest;
+import com.tp.timeAhead.data.requests.UserRequest;
 import com.tp.timeAhead.data.responses.AuthenticationDto;
 import com.tp.timeAhead.data.responses.UserDto;
 import com.tp.timeAhead.exceptions.NotFoundException;

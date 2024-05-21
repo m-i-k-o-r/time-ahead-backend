@@ -1,4 +1,4 @@
-package com.tp.timeAhead.data.requests.task;
+package com.tp.timeAhead.data.requests;
 
 import java.time.LocalDateTime;
 

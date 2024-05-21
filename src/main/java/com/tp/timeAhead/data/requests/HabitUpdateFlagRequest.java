@@ -1,4 +1,4 @@
-package com.tp.timeAhead.data.requests.habit;
+package com.tp.timeAhead.data.requests;
 
 public record HabitUpdateFlagRequest(
         boolean changeComplete,

@@ -1,7 +1,7 @@
 package com.tp.timeAhead.controllers;
 
 import com.tp.timeAhead.data.responses.TaskDto;
-import com.tp.timeAhead.data.requests.task.TaskRequest;
+import com.tp.timeAhead.data.requests.TaskRequest;
 import com.tp.timeAhead.services.TaskService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;

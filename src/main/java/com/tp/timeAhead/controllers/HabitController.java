@@ -1,7 +1,7 @@
 package com.tp.timeAhead.controllers;
 
-import com.tp.timeAhead.data.requests.habit.HabitRequest;
-import com.tp.timeAhead.data.requests.habit.HabitUpdateFlagRequest;
+import com.tp.timeAhead.data.requests.HabitRequest;
+import com.tp.timeAhead.data.requests.HabitUpdateFlagRequest;
 import com.tp.timeAhead.data.responses.HabitDto;
 import com.tp.timeAhead.services.HabitService;
 import io.swagger.v3.oas.annotations.Operation;

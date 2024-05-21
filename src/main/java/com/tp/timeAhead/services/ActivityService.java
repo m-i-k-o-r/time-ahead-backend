@@ -1,7 +1,7 @@
 package com.tp.timeAhead.services;
 
 import com.tp.timeAhead.data.mappers.ActivityMapper;
-import com.tp.timeAhead.data.requests.activity.ActivityRequest;
+import com.tp.timeAhead.data.requests.ActivityRequest;
 import com.tp.timeAhead.data.responses.ActivityDto;
 import com.tp.timeAhead.exceptions.NotFoundException;
 import com.tp.timeAhead.models.Activity;

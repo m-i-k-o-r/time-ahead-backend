@@ -1,7 +1,7 @@
 package com.tp.timeAhead.services;
 
 import com.tp.timeAhead.data.mappers.AdminMapper;
-import com.tp.timeAhead.data.requests.admin.AdminRequest;
+import com.tp.timeAhead.data.requests.AdminRequest;
 import com.tp.timeAhead.data.responses.AdminDto;
 import com.tp.timeAhead.data.responses.AuthenticationDto;
 import com.tp.timeAhead.exceptions.NotFoundException;
