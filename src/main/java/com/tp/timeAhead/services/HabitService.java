@@ -6,6 +6,7 @@ import com.tp.timeAhead.data.requests.habit.HabitUpdateFlagRequest;
 import com.tp.timeAhead.data.responses.HabitDto;
 import com.tp.timeAhead.exceptions.NotFoundException;
 import com.tp.timeAhead.models.Habit;
+import com.tp.timeAhead.models.User;
 import com.tp.timeAhead.repos.HabitRepository;
 import com.tp.timeAhead.repos.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +21,7 @@ public class HabitService {
     private final HabitRepository habitRepository;
     private final UserRepository userRepository;
 
-    private final UserService userService;
+    private final JwtService jwtService;
 
     public HabitDto createHabit(HabitRequest form) {
         String cron = String.format("0 %s %s * * %s",
@@ -33,7 +34,7 @@ public class HabitService {
                 .repeatReminder(cron)
                 .numReminder(0)
                 .isDone(false)
-                .user(userRepository.findById(userService.tokenToUser().getId())
+                .user(userRepository.findById(((User) jwtService.extractUserDetails()).getId())
                         .orElseThrow(() -> new NotFoundException("Пользователь с этим id не найден")))
                 .build()));
     }
@@ -82,13 +83,13 @@ public class HabitService {
         if (day == null) {
             return HabitMapper.INSTANCE.toDto(
                     habitRepository.findAll(
-                            userService.tokenToUser().getId(),
+                            ((User) jwtService.extractUserDetails()).getId(),
                             isEnd
                     ));
         } else {
             return HabitMapper.INSTANCE.toDto(
                     habitRepository.findAllByDay(
-                            userService.tokenToUser().getId(),
+                            ((User) jwtService.extractUserDetails()).getId(),
                             day,
                             isEnd
                     ));

@@ -6,6 +6,8 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +24,15 @@ public class JwtService {
 
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
+    }
+
+    public UserDetails extractUserDetails() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        return (UserDetails) authentication.getCredentials();
+    }
+
+    public String extractAuthorities() {
+        return SecurityContextHolder.getContext().getAuthentication().getAuthorities().toString();
     }
 
     public <T> T extractClaim(String token, Function<Claims, T> claimsFunction) {

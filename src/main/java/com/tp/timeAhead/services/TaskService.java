@@ -5,6 +5,7 @@ import com.tp.timeAhead.data.requests.task.TaskRequest;
 import com.tp.timeAhead.data.responses.TaskDto;
 import com.tp.timeAhead.exceptions.NotFoundException;
 import com.tp.timeAhead.models.Task;
+import com.tp.timeAhead.models.User;
 import com.tp.timeAhead.repos.TaskRepository;
 import com.tp.timeAhead.repos.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +20,7 @@ public class TaskService {
     private final TaskRepository taskRepository;
     private final UserRepository userRepository;
 
-    private final UserService userService;
+    private final JwtService jwtService;
 
     public TaskDto createTask(TaskRequest form) {
         return TaskMapper.INSTANCE.toDto(taskRepository.save(Task.builder()
@@ -27,7 +28,7 @@ public class TaskService {
                 .description(form.description())
                 .reminder(form.reminder())
                 .isDone(false)
-                .user(userRepository.findById(userService.tokenToUser().getId())
+                .user(userRepository.findById(((User) jwtService.extractUserDetails()).getId())
                         .orElseThrow(() -> new NotFoundException("Пользователь с этим id не найден")))
                 .build()));
     }
@@ -61,14 +62,13 @@ public class TaskService {
         if (reminderSortDirection.equalsIgnoreCase("asc")) {
             return TaskMapper.INSTANCE.toDto(
                     taskRepository.findAllByOrderByReminderAsc(
-                            userService.tokenToUser().getId(),
+                            ((User) jwtService.extractUserDetails()).getId(),
                             isDone
                     ));
         } else if (reminderSortDirection.equalsIgnoreCase("desc")) {
             return TaskMapper.INSTANCE.toDto(
                     taskRepository.findAllByOrderByReminderDesc(
-                            userService.tokenToUser().
-                                    getId(),
+                            ((User) jwtService.extractUserDetails()).getId(),
                             isDone
                     ));
         }

@@ -10,11 +10,10 @@ import com.tp.timeAhead.repos.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -57,7 +56,7 @@ public class UserService {
                 .orElseThrow(() -> new NotFoundException("Пользователь с этим id не найден"));
 
         user.setEmail(form.email());
-        user.setPassword(form.password());
+        user.setPassword(passwordEncoder.encode(form.password()));
 
         return UserMapper.INSTANCE.toDto(userRepository.save(user));
     }
@@ -73,10 +72,5 @@ public class UserService {
 
     public void deleteUser(UUID id) {
         userRepository.deleteById(id);
-    }
-
-    public User tokenToUser() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        return (User) authentication.getCredentials();
     }
 }
