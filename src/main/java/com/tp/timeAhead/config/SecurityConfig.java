@@ -3,6 +3,7 @@ package com.tp.timeAhead.config;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -40,8 +41,19 @@ public class SecurityConfig {
                 // Можно указать конкретный путь, * - 1 уровень вложенности, ** - любое количество уровней вложенности
                 .authorizeHttpRequests(request -> request
                         .requestMatchers("/user/register", "/user/authenticate").permitAll()
+                        .requestMatchers(HttpMethod.PUT, "/user/{id}").hasAuthority( "USER")
+                        .requestMatchers(HttpMethod.DELETE, "/user/{id}").hasAuthority("ADMIN")
+                        .requestMatchers("/user/{id}").hasAnyAuthority("ADMIN", "USER")
+                        .requestMatchers("/user").hasAuthority("ADMIN")
+
+                        .requestMatchers("/admin/authenticate").permitAll()
+                        .requestMatchers("/admin/**").hasAuthority("ADMIN")
+
+                        .requestMatchers("/category/**").hasAnyAuthority("ADMIN", "USER")
+
+                        .requestMatchers("/activity/**", "/habit/**", "/task/**").hasAuthority("USER")
+
                         .requestMatchers("/swagger-ui/**", "/swagger-resources/*", "/v3/api-docs/**").permitAll()
-                        .requestMatchers("/activity/**", "/category/**", "/habit/**", "/task/**").hasAuthority("USER")
                         .anyRequest().authenticated())
                 .sessionManagement(manager -> manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider)
