@@ -11,6 +11,9 @@ import java.util.UUID;
 
 @Repository
 public interface CategoryRepository extends JpaRepository<Category, UUID> {
-    @Query("SELECT c FROM Category c WHERE c.user.id = :userId")
+    @Query("SELECT c FROM Category c WHERE c.user.id = :userId OR c.user IS NULL ORDER BY c.isOverall DESC")
     List<Category> findAll(@Param("userId") UUID userId);
+
+    @Query("SELECT c FROM Category c WHERE c.isOverall = true ORDER BY c.isOverall DESC")
+    List<Category> findAllByAdmin();
 }

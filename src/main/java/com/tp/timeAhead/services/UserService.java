@@ -29,9 +29,11 @@ public class UserService {
         User user = userRepository.save(User.builder()
                 .email(form.email())
                 .password(passwordEncoder.encode(form.password()))
+                .dateRegistration(LocalDateTime.now())
                 .build());
         var jwtToken = jwtService.generateToken(user);
         return AuthenticationDto.builder()
+                .id(user.getId())
                 .accessToken(jwtToken)
                 .build();
     }
@@ -47,6 +49,7 @@ public class UserService {
                 .orElseThrow(() -> new NotFoundException("Пользователь с этой почтой не найден"));
         var jwtToken = jwtService.generateToken(user);
         return AuthenticationDto.builder()
+                .id(user.getId())
                 .accessToken(jwtToken)
                 .build();
     }

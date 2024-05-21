@@ -17,6 +17,7 @@ public class Category {
     @GeneratedValue
     private UUID id;
     private String name;
+    private boolean isOverall;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
